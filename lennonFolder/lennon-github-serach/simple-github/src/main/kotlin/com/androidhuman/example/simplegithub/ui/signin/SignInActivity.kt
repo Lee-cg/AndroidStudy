@@ -65,10 +65,15 @@ class SignInActivity : AppCompatActivity() {
         showProgress()
 
         // uri : lennonsimplegithub://authorize?code=fa7fca5be85c7aa167f3
-        val uri = intent.data ?: throw IllegalArgumentException("No data exists")
-        val code = uri.getQueryParameter("code")
-                ?: throw IllegalStateException("No code exists")
-        getAccessToken(code)
+        try {
+            val uri = intent.data ?: throw IllegalArgumentException("No data exists")
+            val code = uri.getQueryParameter("code")
+                    ?: throw IllegalStateException("No code exists")
+            getAccessToken(code)
+        } catch (e: IllegalArgumentException) {
+            //데이터가 없을 경우 SignInActivity를 finish()해서 다시 로그인 유도
+            finish()
+        }
     }
 
     private fun getAccessToken(code: String) {

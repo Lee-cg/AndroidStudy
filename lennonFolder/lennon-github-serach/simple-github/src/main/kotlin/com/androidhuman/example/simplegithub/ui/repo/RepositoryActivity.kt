@@ -33,11 +33,16 @@ class RepositoryActivity : AppCompatActivity() {
 
         lifecycle.addObserver(disposables)
 
-        val login = intent.getStringExtra(KEY_USER_LOGIN)
-                ?: throw IllegalArgumentException("No login info exists in extras")
-        val repo = intent.getStringExtra(KEY_REPO_NAME)
-                ?: throw IllegalArgumentException("No repo info exists in extras")
-        showRepositoryInfo(login, repo)
+        try {
+            val login = intent.getStringExtra(KEY_USER_LOGIN)
+                    ?: throw IllegalArgumentException("No login info exists in extras")
+            val repo = intent.getStringExtra(KEY_REPO_NAME)
+                    ?: throw IllegalArgumentException("No repo info exists in extras")
+            showRepositoryInfo(login, repo)
+        } catch (e: IllegalArgumentException) {
+            finish()
+        }
+
     }
 
     private fun showRepositoryInfo(login: String, repoName: String) {
